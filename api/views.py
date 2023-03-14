@@ -1,12 +1,18 @@
 
-# from django.http import JsonResponse
-
 from rest_framework.response import Response
+from rest_framework.decorators import api_view
+
 # Create your views here.
+
+@api_view(['GET'])
 def allEndpoints(request):
-    endpoints = {
-        "all movies": "api/movies",
-        "single movie": "api/movie/<id>"
+    Endpoints = {
+        "method(GET)": "mopi/all", # list all movies 
+        "method(GET)": "mopi/<int:pk>", # get a single movie 
+        "method(PUT)": "mopi/<int:pk>/ch",
+        "method(DELETE)": "mopi/<int:pk/delete"
     }
 
-    return Response(endpoints)
+    return Response(Endpoints)
+
+
