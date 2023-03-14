@@ -95,3 +95,12 @@ def mopi_new(request: Request):
     
 
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+@api_view(['DELETE'])
+def mopi_delete(request:Request, pk:int):
+    movie = get_objects(pk=pk)
+    movie.delete()
+
+    return Response(status=status.HTTP_204_NO_CONTENT)
