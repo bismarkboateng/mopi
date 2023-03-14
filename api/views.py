@@ -8,7 +8,9 @@ from rest_framework import status
 
 # Create your views here.
 
-def get_objects():
+def get_objects(pk=None):
+    if pk:
+        return Movie.objects.get(pk=pk)
     return Movie.objects.all()
 
 
@@ -16,13 +18,16 @@ def get_objects():
 def allEndpoints(request):
     Endpoints = {
         "method(GET)": "mopi/all", # list all movies 
-        "method(GET)": "mopi/<int:pk>", # get a single movie 
-        "method(PUT)": "mopi/<int:pk>/ch",
+        "method(GET)": "mopi/<int:pk/single>", # get a single movie 
+        "method(PUT)": "mopi/<int:pk>/ch", # updating a movie
         "method(DELETE)": "mopi/<int:pk/delete"
     }
 
-    return Response(Endpoints)
+    endpoints = {
+        "All Endponts": Endpoints
+    }
 
+    return Response(endpoints)
 
 
 
@@ -30,5 +35,21 @@ def allEndpoints(request):
 def mopi_all(request:Request):
     movies = get_objects()
     serializer = MovieSerializer(movies, many=True)
+
+    response = {
+        "All Movies": serializer.data,
+    }
     
-    return Response(serializer.data, status=status.HTTP_200_OK)
+    return Response(response, status=status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+def mopi_single(request:Request, pk:int):
+    movie = get_objects(pk=pk)
+    serializer = MovieSerializer(movie, many=False)
+
+    response = {
+        "A Single Movie": serializer.data
+    }
+
+    return Response(response, status=status.HTTP_200_OK)
