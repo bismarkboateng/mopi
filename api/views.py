@@ -53,3 +53,24 @@ def mopi_single(request:Request, pk:int):
     }
 
     return Response(response, status=status.HTTP_200_OK)
+
+
+
+@api_view(['PUT'])
+def mopi_change(request:Request, pk:int):
+    movie = get_objects(pk=pk)
+    data = request.data 
+    serializer = MovieSerializer(instance=movie, data=data)
+
+    if serializer.is_valid():
+        serializer.save()
+
+        response = {
+            "message": "Post Updated Succesfully!",
+            "data": serializer.data
+        }
+
+        return Response(response, status=status.HTTP_200_OK)
+    
+
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
