@@ -20,7 +20,8 @@ def allEndpoints(request):
         "method(GET)": "mopi/all", # list all movies 
         "method(GET)": "mopi/<int:pk/single>", # get a single movie 
         "method(PUT)": "mopi/<int:pk>/ch", # updating a movie
-        "method(DELETE)": "mopi/<int:pk/delete"
+        "method(DELETE)": "mopi/<int:pk/delete",
+        "method(POST)": "mopi/new/object" # create a new post object
     }
 
     endpoints = {
@@ -71,6 +72,26 @@ def mopi_change(request:Request, pk:int):
         }
 
         return Response(response, status=status.HTTP_200_OK)
+    
+
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+@api_view(['POST'])
+def mopi_new(request: Request):
+    data = request.data 
+    serializer = MovieSerializer(data=data)
+
+    if serializer.is_valid():
+        serializer.save()
+
+        response = {
+            "message":"Post Created Successfully!",
+            "data": serializer.data
+        }
+
+        return Response(response, status=status.HTTP_201_CREATED)
     
 
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
