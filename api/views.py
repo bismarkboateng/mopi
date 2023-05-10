@@ -18,7 +18,7 @@ def get_objects(pk=None):
 def allEndpoints(request):
     Endpoints = {
         "method(GET)": "mopi/all", # list all movies 
-        "method(GET)": "mopi/<int:pk/single>", # get a single movie 
+        "method(GET)": "mopi/movies/<int:pk>", # get a single movie 
         "method(PUT)": "mopi/<int:pk>/ch", # updating a movie
         "method(DELETE)": "mopi/<int:pk/delete",
         "method(POST)": "mopi/new/object" # create a new post object
